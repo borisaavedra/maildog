@@ -1,0 +1,54 @@
+{% extends './base.html' %}
+
+{% block title %}
+    {{ current_user.name }}    
+{% endblock title %}
+
+{%- block navbar -%}
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.index') }}">Campaigns</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Audience<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Settings
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a href="{{ url_for('main.settings') }}" class="dropdown-item disabled" data-toggle="modal" data-target="#modal_form">Mail settings</a>
+                <div class="dropdown-divider"></div>
+                <a href="{{ url_for('auth.logout') }}" class="dropdown-item" data-toggle="modal" data-target="#modal">Log Out</a>
+            </div>
+        </li>
+    </ul>
+{%- endblock navbar -%}
+
+{% block content %}
+<div class="container">
+    <h2>Your Audience</h2>
+    <table class="table table-hover mt-3">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">Created</th>
+          </tr>
+        </thead>
+        <tbody>
+         {% if not mails %}
+            <td colspan=5 class="table-info"><p class="text-center"><b> You don't have a emails yet 😁</b></p></td>
+         {% else %}
+            {% for mail in mails %}
+                <tr>
+                    <th scope="row">{{ mail.id }}</th>
+                    <td>{{ mail.email }}</td>
+                    <td>{{ mail.created }}</td>
+                </tr>    
+            {% endfor %}
+         {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
